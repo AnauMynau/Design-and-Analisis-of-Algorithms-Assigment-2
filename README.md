@@ -99,7 +99,7 @@ Example:
 | Worst Case	 |  O(n log n)	    |  The heap must be fully restructured for every extracted element.                |
 | Space	       |  O(1)	          |  In-place sorting.
 
-<img width="751" height="452" alt="image" src="https://github.com/user-attachments/assets/1a5ae6ca-5571-47c3-b20a-e370724dc584" />
+<img width="751" height="452" alt="image" src="https://github.com/user-attachments/assets/6abe4235-1a9e-45df-b52b-21384570a9cb" />
 
 
 🧩 Optimization Ideas
