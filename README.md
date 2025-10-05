@@ -19,6 +19,7 @@ The project is part of a pair assignment:
 
 ## 📂 Project Structure
 assignment-2-Heap-Sort/
+
 ├── src/
 │ ├── main/java/
 │ │ ├── algorithms/HeapSort.java
