@@ -1,0 +1,182 @@
+Index: src/main/java/algorithms/HeapSort.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/algorithms/HeapSort.java b/src/main/java/algorithms/HeapSort.java
+new file mode 100644
+--- /dev/null	(date 1759596581659)
++++ b/src/main/java/algorithms/HeapSort.java	(date 1759596581659)
+@@ -0,0 +1,68 @@
++package algorithms;
++
++import metrics.PerformanceTracker;
++
++public class HeapSort {
++
++    private final PerformanceTracker tracker;
++
++    public HeapSort(PerformanceTracker tracker) {
++        this.tracker = tracker;
++    }
++
++
++
++    //
++    public void sort(int[] arr) {
++        int n = arr.length;
++        if (n < 2) return;
++
++        // 1) Построение max-heap (bottom-up)
++        //    идём от последнего внутреннего узла к корню
++        for (int i = (n >>> 1) - 1; i >= 0; i--) {
++            siftDown(arr, i, n);
++        }
++
++        // 2) Извлечение max в конец и восстановление кучи на уменьшенном префиксе
++        for (int end = n - 1; end > 0; end--) {
++            swap(arr, 0, end);
++            siftDown(arr, 0, end);
++        }
++    }
++
++    /** Итеративный sift-down (bottom-up heapify) для max-heap на диапазоне [0, size). */
++    public void siftDown(int[] arr, int root, int size) {
++        int value = arr[root];
++        while (true) {
++            int left = (root << 1) + 1;  // левый chilf
++            if (left >= size) break;
++
++            int right = left + 1;
++            int child = left;
++
++            //выбираем большего child
++            tracker.addComparison();
++            if (right < size && arr[right] > arr[left]) {
++                child = right;
++            }
++
++            tracker.addComparison();
++            // value уже не меньше потомков — на место
++            if (arr[child] <= value) break;
++
++            // сдвигаем большего child вверх
++            arr[root] = arr[child];
++            root = child;
++        }
++        arr[root] = value;
++
++    }
++
++    private void swap(int[] a, int i, int j) {
++        if (i == j) return;
++        tracker.addSwap();
++        int temp = a[i];
++        a[i] = a[j];
++        a[j] = temp;
++    }
++}
+Index: src/main/java/metrics/PerformanceTracker.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/metrics/PerformanceTracker.java b/src/main/java/metrics/PerformanceTracker.java
+new file mode 100644
+--- /dev/null	(date 1759596581660)
++++ b/src/main/java/metrics/PerformanceTracker.java	(date 1759596581660)
+@@ -0,0 +1,27 @@
++package metrics;
++
++public class PerformanceTracker {
++    private long comparisons = 0;
++    private long swaps = 0;
++
++    public void addComparison() {
++        comparisons++;
++    }
++
++    public void addSwap() {
++        swaps++;
++    }
++
++    public long getComparisons() {
++        return comparisons;
++    }
++
++    public long getSwaps() {
++        return swaps;
++    }
++
++    public void reset() {
++        comparisons = 0;
++        swaps = 0;
++    }
++}
+Index: src/test/java/algorithms/HeapSortTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/test/java/algorithms/HeapSortTest.java b/src/test/java/algorithms/HeapSortTest.java
+new file mode 100644
+--- /dev/null	(date 1759596581663)
++++ b/src/test/java/algorithms/HeapSortTest.java	(date 1759596581663)
+@@ -0,0 +1,57 @@
++package algorithms;
++
++
++import metrics.PerformanceTracker;
++import org.junit.Test;
++
++import static org.junit.Assert.assertArrayEquals;
++
++public class HeapSortTest {
++
++    @Test
++    public void testEmptyArray() {
++        PerformanceTracker tracker = new PerformanceTracker();
++        HeapSort sorter = new HeapSort(tracker);
++        int[] arr = {};
++        sorter.sort(arr);
++        assertArrayEquals(new int[]{}, arr);
++    }
++
++    @Test
++    public void testSingleElement() {
++        PerformanceTracker tracker = new PerformanceTracker();
++        HeapSort sorter = new HeapSort(tracker);
++        int[] arr = {22};
++        sorter.sort(arr);
++        assertArrayEquals(new int[]{22}, arr);
++    }
++
++    @Test
++    public void testSortedArray() {
++        PerformanceTracker tracker = new PerformanceTracker();
++        HeapSort sorter = new HeapSort(tracker);
++        int[] arr = {1, 2, 3, 4, 5};
++        sorter.sort(arr);
++        assertArrayEquals(new int[]{1, 2, 3, 4, 5}, arr);
++    }
++
++    @Test
++    public void testReverseArray() {
++        PerformanceTracker tracker = new PerformanceTracker();
++        HeapSort sorter = new HeapSort(tracker);
++        int[] arr = {5, 4, 3, 2, 1};
++        sorter.sort(arr);
++        assertArrayEquals(new int[]{1, 2, 3, 4, 5}, arr);
++    }
++
++    @Test
++    public void testRandomArray() {
++        PerformanceTracker tracker = new PerformanceTracker();
++        HeapSort sorter = new HeapSort(tracker);
++        int[] arr = {3, 1, 4, 1, 5, 9, 2};
++        sorter.sort(arr);
++        assertArrayEquals(new int[]{1, 1, 2, 3, 4, 5, 9}, arr);
++    }
++
++
++}
