@@ -82,18 +82,21 @@ docs/performance-plots/heap_benchmark.csv
 
 Example:
 
-Size (n) |	Time (ms) |	Comparisons	 |   Swaps	   |  Correctly Sorted
-100	     |  1	        |    545	     |    210	     |  true
-1,000	   |   8	      |   15,175	   |   6,982	   |  true
-10,000	 |   72	      |   184,125	   |   87,534	   |  true
-100,000	 |   830	    |  2,471,330	 |  1,045,852	 |  true
+| Size (n) | Time (ms) | Comparisons | Swaps | Correctly Sorted |
+|-----------|------------|-------------|--------|------------------|
+| 100       | 1          | 545         | 210    | true             |
+| 1,000     | 8          | 15,175      | 6,982  | true             |
+| 10,000    | 72         | 184,125     | 87,534 | true             |
+| 100,000   | 830        | 2,471,330   | 1,045,852 | true          |
+
 
 ### Theoretical Complexity
-Case	       |  Time Complexity |	Explanation
-Best Case	   |  O(n log n)	    |  Even if the array is nearly sorted, heapify still dominates.
-Average Case |  O(n log n)	    |  For random data, heap property maintenance gives log n depth per n elements.
-Worst Case	 |  O(n log n)	    |  The heap must be fully restructured for every extracted element.
-Space	       |  O(1)	          |  In-place sorting.
+| Case         |  Time Complexity |	Explanation |
+|--------------|------------------|----------------------------------------------------------------------------------|
+| Best Case	   |  O(n log n)	    |  Even if the array is nearly sorted, heapify still dominates.                    |
+| Average Case |  O(n log n)	    |  For random data, heap property maintenance gives log n depth per n elements.    |
+| Worst Case	 |  O(n log n)	    |  The heap must be fully restructured for every extracted element.                |
+| Space	       |  O(1)	          |  In-place sorting.
 
 
 
